@@ -1,4 +1,3 @@
-# Azure-Project
 Terraform Azure Hands-On Project
 
 This Terraform configuration deploys a simple Azure environment including networking, a Linux VM, and a Storage Account, with Azure Blob Storage as the remote backend for Terraform state.
@@ -15,4 +14,65 @@ Linux VM: Deploys an Ubuntu 18.04 VM with SSH key authentication and a Premium O
 
 Storage Account & Container: Provisions a globally unique Storage Account with a private container for data.
 
-🔒 Remote
+🔒 Remote State Backend
+
+We use Azure Blob Storage to store Terraform state remotely and securely.
+
+Create a Storage Account and Container (already defined in this configuration).
+
+Configure the backend in backend.tf or at the top of your main.tf:
+
+terraform {
+  backend "azurerm" {
+    resource_group_name   = azurerm_resource_group.this.name
+    storage_account_name  = azurerm_storage_account.this.name
+    container_name        = azurerm_storage_container.this.name
+    key                   = "terraform.tfstate"
+  }
+}
+
+Initialize the backend:
+
+terraform init
+
+📋 Prerequisites
+
+Terraform (>= 1.3.0)
+
+Azure CLI
+
+An active Azure Subscription
+
+SSH key pair (~/.ssh/id_rsa.pub)
+
+⚡️ Quick Start
+
+Login & select subscription
+
+az login
+az account set --subscription "<YOUR_SUBSCRIPTION_ID>"
+
+Initialize Terraform (and backend)
+
+terraform init
+
+Review the plan
+
+terraform plan
+
+Apply the configuration
+
+terraform apply -auto-approve
+
+Connect to the VM
+
+ssh ${var.vm_admin_username}@$(terraform output -raw public_ip)
+
+🔄 Cleanup
+
+To destroy all resources and remove the remote state:
+
+terraform destroy -auto-approve
+az storage blob delete --account-name <STORAGE_ACCOUNT> --container-name <CONTAINER> --name terraform.tfstate
+
+
