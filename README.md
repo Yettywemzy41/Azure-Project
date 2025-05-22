@@ -4,6 +4,7 @@ Terraform Azure Hands-On Project
 This Terraform configuration deploys a simple Azure environment including networking, a Linux VM, and a Storage Account, with Azure Blob Storage as the remote backend for Terraform state.
 
 🚀 Project Structure
+
 Resource Group: Creates a resource group named <var.prefix>-rg.
 
 Virtual Network & Subnet: Sets up a VNet (10.0.0.0/16) with a /24 subnet.
@@ -16,5 +17,7 @@ Storage Account & Container: Provisions a globally unique Storage Account with a
 
 🔒 Remote State Backend
 We use Azure Blob Storage to store Terraform state remotely and securely.
+
 Create a Storage Account and Container (already defined in this configuration).
+
 Configure the backend in terraform.tf 
