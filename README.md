@@ -25,7 +25,9 @@ This Terraform configuration deploys a simple Azure environment including networ
 
 terraform {
 
+
   backend "azurerm" {
+  
   
     resource_group_name   = "<resource_group_name>"
     
@@ -37,7 +39,9 @@ terraform {
     
   }
   
+  
 }
+
 
 Initialize the backend:
 
