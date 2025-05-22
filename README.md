@@ -5,9 +5,13 @@ This Terraform configuration deploys a simple Azure environment including networ
 
 🚀 Project Structure
 Resource Group: Creates a resource group named <var.prefix>-rg.
+
 Virtual Network & Subnet: Sets up a VNet (10.0.0.0/16) with a /24 subnet.
+
 Public IP & Network Interface: Allocates a dynamic Public IP and attaches it to a NIC.
+
 Linux VM: Deploys an Ubuntu 18.04 VM with SSH key authentication and a Premium OS disk.
+
 Storage Account & Container: Provisions a globally unique Storage Account with a private container for data.
 
 🔒 Remote State Backend
