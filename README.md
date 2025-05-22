@@ -1,78 +1,50 @@
 Terraform Azure Hands-On Project
 
 This Terraform configuration deploys a simple Azure environment including networking, a Linux VM, and a Storage Account, with Azure Blob Storage as the remote backend for Terraform state.
-
 🚀 Project Structure
-
 Resource Group: Creates a resource group named ${var.prefix}-rg.
-
 Virtual Network & Subnet: Sets up a VNet (10.0.0.0/16) with a /24 subnet.
-
 Public IP & Network Interface: Allocates a dynamic Public IP and attaches it to a NIC.
-
 Linux VM: Deploys an Ubuntu 18.04 VM with SSH key authentication and a Premium OS disk.
-
 Storage Account & Container: Provisions a globally unique Storage Account with a private container for data.
 
 🔒 Remote State Backend
-
 We use Azure Blob Storage to store Terraform state remotely and securely.
+Create a Storage Account and Container (already defined in this configuration). After creating the storage, update your Terraform project with a backend block like this:
 
-Create a Storage Account and Container (already defined in this configuration).
-
-Configure the backend in backend.tf or at the top of your main.tf:
+Configure the backend in terraform.tf:
 
 terraform {
   backend "azurerm" {
-    resource_group_name   = azurerm_resource_group.this.name
-    storage_account_name  = azurerm_storage_account.this.name
-    container_name        = azurerm_storage_container.this.name
-    key                   = "terraform.tfstate"
+    resource_group_name  = "tfstate-backend-rg"
+    storage_account_name = "tfstatebackend123"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
   }
 }
 
-Initialize the backend:
-
-terraform init
+Initialize the backend:terraform init
 
 📋 Prerequisites
-
 Terraform (>= 1.3.0)
-
 Azure CLI
-
 An active Azure Subscription
-
 SSH key pair (~/.ssh/id_rsa.pub)
 
 ⚡️ Quick Start
-
 Login & select subscription
-
 az login
 az account set --subscription "<YOUR_SUBSCRIPTION_ID>"
 
-Initialize Terraform (and backend)
-
-terraform init
-
+Initialize Terraform (and backend) : terraform init
 Review the plan
-
 terraform plan
-
 Apply the configuration
+terraform apply 
 
-terraform apply -auto-approve
-
-Connect to the VM
-
-ssh ${var.vm_admin_username}@$(terraform output -raw public_ip)
 
 🔄 Cleanup
-
-To destroy all resources and remove the remote state:
-
-terraform destroy -auto-approve
+To destroy all resources and remove the remote state: terraform destroy -auto-approve
 az storage blob delete --account-name <STORAGE_ACCOUNT> --container-name <CONTAINER> --name terraform.tfstate
 
 
