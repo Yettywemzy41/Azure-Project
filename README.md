@@ -22,3 +22,26 @@ This Terraform configuration deploys a simple Azure environment including networ
 - Create a Storage Account and Container (already defined in this configuration).
 
 - Configure the backend in terraform.tf 
+
+terraform {
+  backend "azurerm" {
+    resource_group_name   = "<resource_group_name>"
+    storage_account_name  = "<storage_account_name>"
+    container_name        = "<container_name>"
+    key                   = "terraform.tfstate"
+  }
+}
+
+Initialize the backend:
+
+terraform init
+
+📋 Prerequisites
+
+- Terraform (>= 1.3.0)
+
+- Azure CLI
+
+- An active Azure Subscription
+
+- SSH key pair (~/.ssh/id_rsa.pub)
